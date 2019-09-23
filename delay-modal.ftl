@@ -5,7 +5,6 @@
 </style>
 
 <div class="d-flex justify-content-center delay-modal-root">
-	<button class="btn btn-primary show-modal-btn" data-target="#customDelayModal${randomNamespace}" data-toggle="modal" type="button">Edit Modal Content</button>
 	<div aria-labelledby="clayDefaultModalLabel" class="fade modal" id="customDelayModal${randomNamespace}" role="dialog" style="display: none;" tabindex="-1">
 		<div class="modal-dialog modal-dialog-sm position-relative">
 			<div class="modal-content">
@@ -49,59 +48,18 @@
 <script>
 	var modalElement = $('#customDelayModal${randomNamespace}');
 
-	console.log('modalElement', modalElement);
+	modalElement.on(
+		'click',
+		'.btn-modal-action',
+		function(e) {
+			modalElement.modal('hide');
+		}
+	);
 
-	var editing = !!document.getElementsByClassName('fragments-editor').length;
-
-	if (editing) {
-		console.log($(modalElement).parents('.fragment-entry-link-wrapper').first());
-		var fragment = $(modalElement);
-
-		fragment.parents('.fragment-entry-link-wrapper').first().attr('delay-modal', 'true');
-
-		var modal = fragment.find('.modal').first();
-
-		var body = $('body');
-
-		modal.on(
-			'show.bs.modal',
-			function(event) {
-				console.log('show', event);
-
-				body.addClass('delay-modal-open');
-			}
-		);
-
-		modal.on(
-			'hide.bs.modal',
-			function(event) {
-				console.log('hide', event);
-
-				body.removeClass('delay-modal-open');
-			}
-		);
-
-		fragment.find('.btn[data-dismiss="modal"]').first().attr('data-dismiss', 'none');
-	} else {
-		modalElement.on(
-			'click',
-			'.btn-modal-action',
-			function(e) {
-				// e.preventDefault();
-
-				console.log('btn-modal-action');
-
-				modalElement.modal('hide');
-
-				// window.location.href = '${SubmitButtonLink.getFriendlyUrl()}';
-			}
-		);
-
-		setTimeout(
-			function() {
-				modalElement.modal();
-			},
-			parseInt(${ModalShowDelayMs.getData()})
-		);
-	}
+	setTimeout(
+		function() {
+			modalElement.modal();
+		},
+		parseInt(${ModalShowDelayMs.getData()})
+	);
 </script>
